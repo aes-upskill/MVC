@@ -1,0 +1,51 @@
+﻿@model IEnumerable<CartModel>
+@{
+    ViewData["Title"] = "View Cart";
+}
+@using (Html.BeginForm())
+{
+    <table class="table table-sm">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Code</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quantity</th>
+            </tr>
+        </thead>
+        @if (Model.Any())
+        {
+            <tbody>
+                @foreach (var product in Model.OrderByDescending(x => x.Name))
+                {
+                    <tr>
+                        <td>@product.ProductID</td>
+                        <td>@product.Code</td>
+                        <td>@product.Name</td>
+                        <td>@product.Quantity</td>
+                    </tr>
+                }
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <button type="submit" asp-action="Checkout" asp-controller="Cart" class="btn btn-primary">Save</button>
+                    </td>
+                </tr>
+            </tfoot>
+        }
+        else
+        {
+            <tbody>
+                <tr>
+                    <td colspan="6">
+                        <div class="alert alert-secondary" role="alert">
+                            Your cart is empty!
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+}

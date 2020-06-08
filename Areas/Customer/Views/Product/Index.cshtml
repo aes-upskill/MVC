@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ProductModel>
+@{
+    ViewData["Title"] = "View Products";
+}
+
+<table class="table table-sm">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Code</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Last Updated</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    @if (Model.Any())
+    {
+        <tbody>
+            @foreach (var product in Model.OrderByDescending(x => x.ModifiedDate))
+            {
+                <tr>
+                    <td>@product.ProductID</td>
+                    <td>@product.Code</td>
+                    <td>@product.Name</td>
+                    <td>@product.Category?.Name</td>
+                    <td>@product.ModifiedDate</td>
+                    <td>@Html.ActionLink("[+]", "Add2Cart","Cart", new { productId = product.ProductID })</td>
+                </tr>
+            }
+
+        </tbody>
+    }
+    else
+    {
+        <tbody>
+            <tr>
+                <td colspan="6">
+                    <div class="alert alert-secondary" role="alert">
+                        No products!
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    }
+</table>

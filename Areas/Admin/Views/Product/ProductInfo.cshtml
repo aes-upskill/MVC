@@ -1,0 +1,26 @@
+﻿@model ProductModel
+@using (Html.BeginForm(controllerName: "Product", actionName: "save", method: FormMethod.Post))
+{
+    <h1 class="display-4">@(Model.ProductID>0? $"Edit - {Model.Name}" : "Add New Product")</h1>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Code)
+        @Html.TextBoxFor(x => x.Code, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Code)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Name)
+        @Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.CategoryID)
+        @Html.DropDownListFor(x => x.CategoryID, (IEnumerable<SelectListItem>)ViewBag.Categories, "Select", new { @class = "form-control" })
+        @Html.ValidationMessageFor(x => x.CategoryID)
+    </div>
+    @Html.HiddenFor(x => x.ProductID)
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+@section Scripts
+{
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

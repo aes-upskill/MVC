@@ -1,0 +1,42 @@
+[
+  {
+    "CategoryID": 1,
+    "Name": "Category 1"
+  },
+  {
+    "CategoryID": 2,
+    "Name": "Category 2"
+  },
+  {
+    "CategoryID": 3,
+    "Name": "Category 3"
+  },
+  {
+    "CategoryID": 4,
+    "Name": "Category 4"
+  },
+  {
+    "CategoryID": 5,
+    "Name": "Category 5"
+  },
+  {
+    "CategoryID": 6,
+    "Name": "Category 6"
+  },
+  {
+    "CategoryID": 7,
+    "Name": "Category 7"
+  },
+  {
+    "CategoryID": 8,
+    "Name": "Category 8"
+  },
+  {
+    "CategoryID": 9,
+    "Name": "Category 9"
+  },
+  {
+    "CategoryID": 10,
+    "Name": "Category 10"
+  }
+]
