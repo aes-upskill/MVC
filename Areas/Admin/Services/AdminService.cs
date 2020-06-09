@@ -1,11 +1,13 @@
 ﻿using Easy.Commerce.Areas.Admin.Models;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace Easy.Commerce.Areas.Admin.Services
 {
-    public class AdminService
+    public class AdminService: IAdminService
     {
         private readonly string productJsonFile = "products.json";
         private readonly string categoryJsonFile = "categories.json";
@@ -16,18 +18,40 @@ namespace Easy.Commerce.Areas.Admin.Services
             categoryJsonFile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "data", categoryJsonFile);
         }
 
-        public IEnumerable<ProductModel> GetProducts()
+        public IList<ProductModel> GetProducts()
         {
-            return JsonConvert.DeserializeObject<IEnumerable<ProductModel>>(System.IO.File.ReadAllText(@productJsonFile));
+            var products = JsonConvert.DeserializeObject<IList<ProductModel>>(System.IO.File.ReadAllText(@productJsonFile));
+            var categories = GetCategories();
+            foreach (var product in products)
+            {
+                product.Category = categories.FirstOrDefault(p => p.CategoryID == product.CategoryID);
+            }
+            return products;
         }
 
-        public IEnumerable<CategoryModel> GetCategories()
+        public IList<CategoryModel> GetCategories()
         {
-            return JsonConvert.DeserializeObject<IEnumerable<CategoryModel>>(System.IO.File.ReadAllText(categoryJsonFile));
+            return JsonConvert.DeserializeObject<IList<CategoryModel>>(System.IO.File.ReadAllText(categoryJsonFile));
         }
 
-        public void SaveProduct(IEnumerable<ProductModel> products)
+        public void SaveProduct(ProductModel product)
         {
+            var products = GetProducts();
+            if (products.Any(x => x.ProductID == product.ProductID))
+            {
+                var editedProduct = products.First(x => x.ProductID == product.ProductID);
+                editedProduct.Code = product.Code;
+                editedProduct.Name = product.Name;
+                editedProduct.CategoryID = product.CategoryID;
+                editedProduct.ModifiedDate = DateTime.UtcNow;
+            }
+            else
+            {
+                product.CreatedDate = DateTime.UtcNow;
+                product.ModifiedDate = DateTime.UtcNow;
+                product.ProductID = products.Count + 1;
+                products.Add(product);
+            }
             System.IO.File.WriteAllText(productJsonFile, JsonConvert.SerializeObject(products));
         }
     }

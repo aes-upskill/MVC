@@ -2,27 +2,22 @@
 using Easy.Commerce.Areas.Admin.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
 using System.Linq;
 
 namespace Easy.Commerce.Areas.Admin.Controllers
 {
     public class ProductController : BaseAdminController
     {
-        private readonly AdminService adminService;
-        public ProductController()
+        private readonly IAdminService adminService;
+
+        public ProductController(IAdminService adminService)
         {
-            adminService = new AdminService();
+            this.adminService = adminService;
         }
 
         public IActionResult Index()
         {
             var products = adminService.GetProducts();
-            var categories = adminService.GetCategories();
-            foreach (var product in products)
-            {
-                product.Category = categories.FirstOrDefault(p => p.CategoryID == product.CategoryID);
-            }
             return View(products);
         }
 
@@ -49,25 +44,9 @@ namespace Easy.Commerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var products = adminService.GetProducts().ToList();
-                if (products.Any(x => x.ProductID == product.ProductID))
-                {
-                    var editedProduct = products.First(x => x.ProductID == product.ProductID);
-                    editedProduct.Code = product.Code;
-                    editedProduct.Name = product.Name;
-                    editedProduct.CategoryID = product.CategoryID;
-                    editedProduct.ModifiedDate = DateTime.UtcNow;
-                }
-                else
-                {
-                    product.CreatedDate = DateTime.UtcNow;
-                    product.ModifiedDate = DateTime.UtcNow;
-                    product.ProductID = products.Count + 1;
-                    products.Add(product);
-                }
-                adminService.SaveProduct(products);
+                adminService.SaveProduct(product);
             }
-            return RedirectToAction("Index","Product");
+            return RedirectToAction("Index", "Product");
         }
     }
 }
