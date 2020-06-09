@@ -11,8 +11,9 @@
 
 ## Technologies and frameworks used:
 - ASP.NET MVC Core 3.1
+- Entity Framework Core 3.1 ( UpdateD 09-JUN-2020 )
 
 ## Roadmap
-- Entity Framework Core 3.1
+
 - ASP.NET Identity Core 3.1
 - Angular
