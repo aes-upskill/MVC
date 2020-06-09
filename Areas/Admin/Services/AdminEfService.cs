@@ -1,6 +1,7 @@
 ﻿using Easy.Commerce.Areas.Admin.Data;
 using Easy.Commerce.Areas.Admin.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,7 +23,26 @@ namespace Easy.Commerce.Areas.Admin.Services
 
         public void SaveProduct(ProductModel product)
         {
-            // not implemented
+            
+            if (product.ProductID > 0)
+            {
+                var productFromDb = adminDbContext.Products.AsNoTracking().Any(x => x.ProductID == product.ProductID);
+                if (productFromDb)
+                {
+                    product.ModifiedDate = DateTime.UtcNow;
+                    adminDbContext.Products.Update(product);
+                }
+                else
+                {
+                    product.ProductID = 0;
+                }
+            }
+            if (product.ProductID == 0)
+            {
+                product.CreatedDate = product.ModifiedDate = DateTime.UtcNow;
+                adminDbContext.Products.Add(product);
+            }
+            adminDbContext.SaveChanges();
         }
 
         IList<ProductModel> IAdminService.GetProducts()
