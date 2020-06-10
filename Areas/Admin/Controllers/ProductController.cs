@@ -30,14 +30,14 @@ namespace Easy.Commerce.Areas.Admin.Controllers
 
         public IActionResult EditById(int id)
         {
-            var products = adminService.GetProducts();
-            if (products.Any(x => x.ProductID == id))
+            var products = adminService.GetProductById(id);
+            if (products != null)
             {
                 var categories = adminService.GetCategories();
                 ViewBag.Categories = categories.Select(x => new SelectListItem(x.Name, x.CategoryID.ToString()));
-                return View("ProductInfo", products.First(x => x.ProductID == id));
+                return View("ProductInfo", products);
             }
-            return RedirectToActionPermanent("New");
+            return RedirectToAction("New");
         }
 
         public IActionResult Save(ProductModel product)

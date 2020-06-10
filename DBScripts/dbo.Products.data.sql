@@ -1,3 +1,5 @@
+USE [EasyCommerce]
+GO
 SET IDENTITY_INSERT [dbo].[Products] ON
 INSERT INTO [dbo].[Products] ([ProductID], [Code], [ProductName], [CategoryID], [CreatedDate], [ModifiedDate]) VALUES (68, N'CODE001', N'Windows', 1, N'2020-06-09 17:21:52', N'2020-06-09 17:21:52')
 INSERT INTO [dbo].[Products] ([ProductID], [Code], [ProductName], [CategoryID], [CreatedDate], [ModifiedDate]) VALUES (69, N'CODE002', N'Windows 10', 1, N'2020-06-09 17:21:52', N'2020-06-09 17:21:52')

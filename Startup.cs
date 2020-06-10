@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Easy.Commerce
 {
@@ -22,6 +23,7 @@ namespace Easy.Commerce
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.Configure<RazorViewEngineOptions>(options =>
             {
                 options.AreaViewLocationFormats.Clear();
@@ -31,11 +33,16 @@ namespace Easy.Commerce
             });
 
             services.AddControllersWithViews();
+            services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+            var logFactory = LoggerFactory.Create(b => b.AddConsole().AddDebug());
 
             services.AddDbContext<AdminDBContext>(options =>
             {
-                options.EnableSensitiveDataLogging(true);
-                options.UseSqlServer(Configuration.GetConnectionString("AppConnection"));
+                options
+                .UseSqlServer(Configuration.GetConnectionString("AppConnection"))
+                .EnableSensitiveDataLogging()
+                .UseLoggerFactory(logFactory);
+
             });
 
             //services.AddTransient<IAdminService, AdminService>();

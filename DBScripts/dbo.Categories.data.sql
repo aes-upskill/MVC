@@ -1,3 +1,5 @@
+USE [EasyCommerce]
+GO
 INSERT INTO [dbo].[Categories] ([CategoryID], [Name]) VALUES (1, N'Windows')
 INSERT INTO [dbo].[Categories] ([CategoryID], [Name]) VALUES (2, N'Office')
 INSERT INTO [dbo].[Categories] ([CategoryID], [Name]) VALUES (3, N'Business')
